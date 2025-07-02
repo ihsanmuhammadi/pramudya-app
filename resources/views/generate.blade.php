@@ -1,5 +1,6 @@
-<x-app-layout>
-    <x-slot name="header">
+@extends('layouts.app')
+@section('content')
+<x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Generate PDF') }}
         </h2>
@@ -228,4 +229,4 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     </script>
-</x-app-layout>
+@endsection
