@@ -28,9 +28,18 @@ Route::get('/about', function () {
     return view('about');
 })->middleware(['auth', 'verified'])->name('about');
 
-// Admin routes
-Route::resource('goods', GoodsController::class);
+Route::get('/goods', [GoodsController::class, 'index'])->name('goods.index');
+Route::get('/goods/create', [GoodsController::class, 'create'])->name('goods.create');
+Route::post('/goods', [GoodsController::class, 'store'])->name('goods.store');
+Route::get('/goods/{id}', [GoodsController::class, 'show'])->name('goods.show');
+Route::get('/goods/{id}/edit', [GoodsController::class, 'edit'])->name('goods.edit');
+Route::put('/goods/{id}', [GoodsController::class, 'update'])->name('goods.update');
+Route::delete('/goods/{id}', [GoodsController::class, 'destroy'])->name('goods.destroy');
 
+// Add these routes to your web.php file
+Route::get('/goods/export/excel', [GoodsController::class, 'exportExcel'])->name('goods.export.excel');
+Route::get('/goods/export/pdf', [GoodsController::class, 'exportPdf'])->name('goods.export.pdf');
+Route::get('/goods/export/csv', [GoodsController::class, 'exportCsv'])->name('goods.export.csv');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

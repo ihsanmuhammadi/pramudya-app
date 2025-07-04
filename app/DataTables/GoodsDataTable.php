@@ -23,6 +23,28 @@ class GoodsDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             // ->addColumn('action', 'goods.action')
+            ->addIndexColumn()
+            ->addColumn('action', function ($row) {
+                return '
+                <div class="d-flex justify-content-center">
+                    <button class="btn btn-sm btn-info me-1 btn-show" data-id="'.$row->id.'">
+                        <i class="bi bi-eye"></i>
+                    </button>
+                    <button class="btn btn-sm btn-warning me-1 btn-edit" data-id="'.$row->id.'">
+                        <i class="bi bi-pencil"></i>
+                    </button>
+                    <form action="'.route('goods.destroy', $row->id).'" method="POST" onsubmit="return confirm(\'Are you sure?\')">
+                        '.csrf_field().method_field('DELETE').'
+                        <button type="submit" class="btn btn-sm btn-danger">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </form>
+                </div>';
+            })
+            ->editColumn('harga_barang', function ($row) {
+                return 'Rp. ' . number_format($row->harga_barang, 0, ',', '.');
+            })
+            ->rawColumns(['action'])
             ->setRowId('id');
     }
 
@@ -42,20 +64,40 @@ class GoodsDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('goods-table')
-                    ->columns($this->getColumns())
-                    ->minifiedAjax()
-                    ->orderBy(1)
-                    ->selectStyleSingle()
-                    ->buttons([
-                        Button::make('excel'),
-                        Button::make('csv'),
-                        Button::make('pdf'),
-                        Button::make('print'),
-                        Button::make('reset'),
-                        Button::make('reload')
-                    ]);
+            ->setTableId('goods-table')
+            ->columns($this->getColumns())
+            ->minifiedAjax()
+            // ->dom('lBfrtip')
+            ->orderBy(1)
+            ->selectStyleSingle()
+            ->buttons([
+                Button::make('create'),
+                Button::make('excel'),
+                Button::make('csv'),
+                Button::make('pdf'),
+                Button::make('print'),
+                Button::make('reset'),
+                Button::make('reload')
+            ])
+            ->parameters([
+                'responsive' => true,
+                'autoWidth' => false,
+                'stateSave' => true,
+                'ordering' => true,
+                'language' => [
+                    'search' => '_INPUT_',
+                    'searchPlaceholder' => 'Cari barang...',
+                    'lengthMenu' => 'Show _MENU_ entries',
+                    // 'info' => 'Showing _START_ to _END_ of _TOTAL_ goods',
+                    'infoEmpty' => 'No goods available',
+                    // 'infoFiltered' => '(filtered from _MAX_ total goods)',
+                    'zeroRecords' => 'No matching goods found',
+                    'emptyTable' => 'No goods data available'
+                ]
+            ])
+            ;
     }
+
 
     /**
      * Get the dataTable columns definition.
@@ -63,15 +105,23 @@ class GoodsDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            // Column::computed('action')
-            //       ->exportable(false)
-            //       ->printable(false)
-            //       ->width(60)
-            //       ->addClass('text-center'),
-            Column::make('id'),
+            Column::computed('DT_RowIndex')
+                  ->title('No')
+                  ->exportable(false)
+                  ->printable(true)
+                  ->orderable(false)
+                  ->searchable(false)
+                  ->width(30),
             Column::make('nama_barang'),
-            Column::make('created_at'),
-            Column::make('updated_at'),
+            Column::make('jumlah_barang'),
+            Column::make('satuan_barang'),
+            Column::make('harga_barang'),
+            Column::make('kode_barang'),
+            Column::computed('action')
+                  ->exportable(false)
+                  ->printable(false)
+                  ->width(60)
+                  ->addClass('text-center')
         ];
     }
 
