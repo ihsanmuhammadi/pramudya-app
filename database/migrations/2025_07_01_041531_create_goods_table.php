@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('nama_barang');
             $table->integer('jumlah_barang');
-            $table->integer('satuan_barang');
+            $table->string('satuan_barang');
             $table->decimal('harga_barang', 10, 2);
             $table->string('kode_barang')->unique();
             $table->text('spesifikasi')->nullable();

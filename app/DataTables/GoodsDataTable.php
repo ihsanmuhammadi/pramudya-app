@@ -33,14 +33,12 @@ class GoodsDataTable extends DataTable
                     <button class="btn btn-sm btn-warning me-1 btn-edit" data-id="'.$row->id.'">
                         <i class="bi bi-pencil"></i>
                     </button>
-                    <form action="'.route('goods.destroy', $row->id).'" method="POST" onsubmit="return confirm(\'Are you sure?\')">
-                        '.csrf_field().method_field('DELETE').'
-                        <button type="submit" class="btn btn-sm btn-danger">
-                            <i class="bi bi-trash"></i>
-                        </button>
-                    </form>
+                    <button type="button" class="btn btn-sm btn-danger btn-delete" data-id="'.$row->id.'">
+                        <i class="bi bi-trash"></i>
+                    </button>
                 </div>';
             })
+
             ->editColumn('harga_barang', function ($row) {
                 return 'Rp. ' . number_format($row->harga_barang, 0, ',', '.');
             })

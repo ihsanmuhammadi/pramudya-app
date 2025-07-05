@@ -1,105 +1,58 @@
-@extends('admin.layout.app')
+<form id="editGoodsForm">
+    @csrf
+    @method('PUT')
 
-@section('title', 'Edit Barang')
+    <input type="hidden" name="id" value="{{ $goods->id }}">
 
-@section('content')
-<div class="row justify-content-center">
-    <div class="col-md-8">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="mb-0"><i class="fas fa-edit"></i> Edit Barang</h5>
-            </div>
-            <div class="card-body">
-                <form method="POST" action="{{ route('goods.update', $goods) }}">
-                    @csrf
-                    @method('PUT')
-
-                    <div class="mb-3">
-                        <label for="nama_barang" class="form-label">Nama Barang</label>
-                        <input type="text" class="form-control @error('nama_barang') is-invalid @enderror"
-                               id="nama_barang" name="nama_barang"
-                               value="{{ old('nama_barang', $barang->nama_barang) }}" required>
-                        @error('nama_barang')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="jumlah_barang" class="form-label">Jumlah Barang</label>
-                                <input type="number" class="form-control @error('jumlah_barang') is-invalid @enderror"
-                                       id="jumlah_barang" name="jumlah_barang"
-                                       value="{{ old('jumlah_barang', $barang->jumlah_barang) }}"
-                                       min="0" required>
-                                @error('jumlah_barang')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="satuan_barang" class="form-label">Satuan Barang</label>
-                                <input type="number" class="form-control @error('satuan_barang') is-invalid @enderror"
-                                       id="satuan_barang" name="satuan_barang"
-                                       value="{{ old('satuan_barang', $barang->satuan_barang) }}"
-                                       min="1" required>
-                                @error('satuan_barang')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="harga_barang" class="form-label">Harga Barang</label>
-                                <div class="input-group">
-                                    <span class="input-group-text">Rp</span>
-                                    <input type="number" class="form-control @error('harga_barang') is-invalid @enderror"
-                                           id="harga_barang" name="harga_barang"
-                                           value="{{ old('harga_barang', $barang->harga_barang) }}"
-                                           min="0" step="0.01" required>
-                                </div>
-                                @error('harga_barang')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="kode_barang" class="form-label">Kode Barang</label>
-                                <input type="text" class="form-control @error('kode_barang') is-invalid @enderror"
-                                       id="kode_barang" name="kode_barang"
-                                       value="{{ old('kode_barang', $barang->kode_barang) }}" required>
-                                @error('kode_barang')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="spesifikasi" class="form-label">Spesifikasi / Catatan</label>
-                        <textarea class="form-control @error('spesifikasi') is-invalid @enderror"
-                                  id="spesifikasi" name="spesifikasi" rows="3">{{ old('spesifikasi', $barang->spesifikasi) }}</textarea>
-                        @error('spesifikasi')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="d-flex justify-content-between">
-                        <a href="{{ route('goods.index') }}" class="btn btn-secondary">
-                            <i class="fas fa-arrow-left"></i> Kembali
-                        </a>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save"></i> Update
-                        </button>
-                    </div>
-                </form>
-            </div>
+    <div class="row g-3">
+        <div class="col-md-6">
+            <label>Nama Barang</label>
+            <input type="text" name="nama_barang" class="form-control"
+                   value="{{ old('nama_barang', $goods->nama_barang) }}"
+                   placeholder="Masukkan nama barang" required>
         </div>
+
+        <div class="col-md-3">
+            <label>Jumlah</label>
+            <input type="number" name="jumlah_barang" class="form-control"
+                   value="{{ old('jumlah_barang', $goods->jumlah_barang) }}"
+                   placeholder="0" required>
+        </div>
+
+        <div class="col-md-3">
+            <label>Satuan</label>
+            <select name="satuan_barang" class="form-select" required>
+                <option value="" disabled {{ old('satuan_barang', $goods->satuan_barang) == '' ? 'selected' : '' }}>Pilih satuan</option>
+                @foreach(['pcs', 'buah', 'pack', 'dus', 'unit'] as $option)
+                    <option value="{{ $option }}"
+                        {{ old('satuan_barang', $goods->satuan_barang) == $option ? 'selected' : '' }}>
+                        {{ ucfirst($option) }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="col-md-6">
+            <label>Harga</label>
+            <input type="number" name="harga_barang" class="form-control"
+                   value="{{ old('harga_barang', $goods->harga_barang) }}"
+                   placeholder="Masukkan harga satuan" required>
+        </div>
+
+        <div class="col-md-6">
+            <label>Kode</label>
+            <input type="text" name="kode_barang" class="form-control"
+                   value="{{ old('kode_barang', $goods->kode_barang) }}"
+                   placeholder="Kode unik barang" required>
+        </div>
+
+        <div class="col-12">
+            <label>Spesifikasi</label>
+            <textarea name="spesifikasi" class="form-control" rows="4" style="resize: vertical;" placeholder="Masukkan spesifikasi barang...">{{ old('spesifikasi', $goods->spesifikasi) }}</textarea>
+        </div>
+
+    <div class="text-end">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+        <button type="submit" class="btn btn-primary">Update</button>
     </div>
-</div>
-@endsection
+</form>
