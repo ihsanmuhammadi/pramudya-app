@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\GoodsController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -40,6 +41,17 @@ Route::delete('/goods/{id}', [GoodsController::class, 'destroy'])->name('goods.d
 Route::get('/goods/export/excel', [GoodsController::class, 'exportExcel'])->name('goods.export.excel');
 Route::get('/goods/export/pdf', [GoodsController::class, 'exportPdf'])->name('goods.export.pdf');
 Route::get('/goods/export/csv', [GoodsController::class, 'exportCsv'])->name('goods.export.csv');
+
+Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
+Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
+Route::get('/orders/{id}/edit', [OrderController::class, 'edit'])->name('orders.edit');
+Route::put('/orders/{id}', [OrderController::class, 'update'])->name('orders.update');
+Route::delete('/orders/{id}', [OrderController::class, 'destroy'])->name('orders.destroy');
+
+Route::get('/orders/export/excel', [OrderController::class, 'exportExcel'])->name('orders.export.excel');
+Route::get('/orders/export/pdf', [OrderController::class, 'exportPdf'])->name('orders.export.pdf');
+Route::get('/orders/export/csv', [OrderController::class, 'exportCsv'])->name('orders.export.csv');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
