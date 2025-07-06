@@ -38,7 +38,7 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    @include('orders._order-form', ['prefix' => 'items'])
+                    @include('orders.create', ['prefix' => 'items'])
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
