@@ -3,10 +3,15 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\GoodsController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\SuratJalanController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/TesTemplate', function () {
+    return view('surat-jalan');
 });
 
 Route::get('/dashboard', function () {
@@ -37,7 +42,6 @@ Route::get('/goods/{id}/edit', [GoodsController::class, 'edit'])->name('goods.ed
 Route::put('/goods/{id}', [GoodsController::class, 'update'])->name('goods.update');
 Route::delete('/goods/{id}', [GoodsController::class, 'destroy'])->name('goods.destroy');
 
-// Add these routes to your web.php file
 Route::get('/goods/export/excel', [GoodsController::class, 'exportExcel'])->name('goods.export.excel');
 Route::get('/goods/export/pdf', [GoodsController::class, 'exportPdf'])->name('goods.export.pdf');
 Route::get('/goods/export/csv', [GoodsController::class, 'exportCsv'])->name('goods.export.csv');
@@ -52,6 +56,9 @@ Route::delete('/orders/{id}', [OrderController::class, 'destroy'])->name('orders
 Route::get('/orders/export/excel', [OrderController::class, 'exportExcel'])->name('orders.export.excel');
 Route::get('/orders/export/pdf', [OrderController::class, 'exportPdf'])->name('orders.export.pdf');
 Route::get('/orders/export/csv', [OrderController::class, 'exportCsv'])->name('orders.export.csv');
+
+// generate pdf
+Route::post('/surat-jalan', [SuratJalanController::class, 'store'])->name('surat-jalan.store');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
