@@ -1,9 +1,12 @@
 <div class="row mb-3">
-    <div class="col-md-6 mb-2">
+    <div class="col-md-3 mb-2">
         <div class="border p-2 rounded"><strong>No PO:</strong> {{ $order->no_po }}</div>
     </div>
-    <div class="col-md-6 mb-2">
+    <div class="col-md-3 mb-2">
         <div class="border p-2 rounded"><strong>Tanggal:</strong> {{ $order->tanggal }}</div>
+    </div>
+    <div class="col-md-6 mb-2">
+        <div class="border p-2 rounded"><strong>Nama PO:</strong> {{ $order->nama_po }}</div>
     </div>
     <div class="col-md-6 mb-2">
         <div class="border p-2 rounded"><strong>Company:</strong> {{ $order->company }}</div>
@@ -37,9 +40,9 @@
         </div>
     </div>
     <div class="col-md-6 d-flex flex-column">
-        <h6 class="fw-bold mb-2 ml-1">Catatan</h6>
+        <h6 class="fw-bold mb-2 ml-1">Keterangan</h6>
         <div class="border rounded p-2 flex-grow-1" style="max-height: 120px; overflow-y: auto;">
-            {{ $order->catatan }}
+            {{ $order->keterangan }}
         </div>
     </div>
 </div>

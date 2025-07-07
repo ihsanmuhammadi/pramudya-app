@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Order extends Model
+class Pengeluaran extends Model
 {
     /** @use HasFactory<\Database\Factories\OrderFactory> */
     use HasFactory;
@@ -17,14 +17,5 @@ class Order extends Model
 
     protected $keyType = 'string';
 
-    protected $fillable = ['no_po', 'nama_po', 'tanggal','company','alamat','no_telp','email','fax','pic','total_semua_barang','keterangan'];
-
-    public function items() {
-        return $this->hasMany(OrderItem::class);
-    }
-
-    public function pendapatan()
-    {
-        return $this->hasOne(Pendapatan::class);
-    }
+    protected $fillable = ['no_po', 'nama_po', 'tanggal', 'total','keterangan'];
 }

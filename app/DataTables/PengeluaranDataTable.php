@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\Order;
+use App\Models\Pengeluaran;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -12,20 +12,17 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class OrderDataTable extends DataTable
+class PengeluaranDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
      *
-     * @param QueryBuilder<Order> $query Results from query() method.
+     * @param QueryBuilder<Pengeluaran> $query Results from query() method.
      */
-    public function dataTable($query): EloquentDataTable
+    public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
             ->addIndexColumn()
-            ->addColumn('jumlah_items', function ($order) {
-                return $order->items()->count() . ' items';
-            })
             ->addColumn('action', function ($order) {
                 return '
                     <div class="d-flex justify-content-center">
@@ -41,8 +38,8 @@ class OrderDataTable extends DataTable
                     </div>
                 ';
             })
-            ->editColumn('total_semua_barang', function ($row) {
-                return 'Rp. ' . number_format($row->total_semua_barang, 0, ',', '.');
+            ->editColumn('total', function ($row) {
+                return 'Rp. ' . number_format($row->total, 0, ',', '.');
             })
             ->rawColumns(['action'])
             ->setRowId('id');
@@ -51,9 +48,9 @@ class OrderDataTable extends DataTable
     /**
      * Get the query source of dataTable.
      *
-     * @return QueryBuilder<Order>
+     * @return QueryBuilder<Pengeluaran>
      */
-    public function query(Order $model): QueryBuilder
+    public function query(Pengeluaran $model): QueryBuilder
     {
         return $model->newQuery();
     }
@@ -64,7 +61,7 @@ class OrderDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-            ->setTableId('orders-table')
+            ->setTableId('pengeluaran-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->orderBy(1)
@@ -84,36 +81,31 @@ class OrderDataTable extends DataTable
                 ]
             ]);
     }
-
     /**
      * Get the dataTable columns definition.
      */
     public function getColumns(): array
     {
-        return [
-            Column::computed('DT_RowIndex')
-                  ->title('No')
-                  ->exportable(false)
-                  ->printable(true)
-                  ->orderable(false)
-                  ->searchable(false)
-                  ->width(30),
-            Column::make('no_po')->title('No PO'),
-            Column::make('nama_po'),
-            Column::make('tanggal'),
-            Column::make('company'),
-            Column::make('pic')->title('PIC'),
-            Column::make('total_semua_barang')->title('Total'),
-            Column::computed('jumlah_items')
-                  ->title('Items')
-                  ->exportable(false)
-                  ->printable(true),
-            Column::computed('action')
-                  ->exportable(false)
-                  ->printable(false)
-                  ->width(60)
-                  ->addClass('text-center')
-        ];
+            return [
+                Column::computed('DT_RowIndex')
+                    ->title('No')
+                    ->exportable(false)
+                    ->printable(true)
+                    ->orderable(false)
+                    ->searchable(false)
+                    ->width(30),
+
+                Column::make('no_po')->title('No PO'),
+                Column::make('nama_po')->title('Nama PO'),
+                Column::make('tanggal')->title('Tanggal'),
+                Column::make('total')->title('Total'),
+
+                Column::computed('action')
+                    ->exportable(false)
+                    ->printable(false)
+                    ->width(60)
+                    ->addClass('text-center'),
+            ];
     }
 
     /**
@@ -121,6 +113,6 @@ class OrderDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Orders_' . date('YmdHis');
+        return 'Pengeluaran_' . date('YmdHis');
     }
 }

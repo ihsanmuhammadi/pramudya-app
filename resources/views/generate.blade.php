@@ -2,7 +2,7 @@
 @section('content')
 <div class="py-10">
     <div class="max-w-4xl mx-auto bg-white p-6 rounded shadow">
-        <h2 class="text-2xl font-bold mb-6">Generate Surat Jalan</h2>
+        <h2 class="text-2xl font-bold mb-6">Surat Jalan</h2>
 
         @if (session('success'))
         <div class="bg-green-100 border border-green-300 text-green-800 p-4 rounded mb-4">

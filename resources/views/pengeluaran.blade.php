@@ -5,10 +5,10 @@
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6 text-gray-900">
-                <h1 class="fw-bold display-6 mb-4">Purchase Order</h1>
+                <h1 class="fw-bold display-6 mb-4">Pengeluaran</h1>
                 <div class="mb-3 d-flex justify-content-between align-items-center">
                     <button class="btn btn-primary" id="btn-create">
-                        <i class="bi bi-plus-circle me-1"></i> Tambah Order
+                        <i class="bi bi-plus-circle me-1"></i> Tambah Pengeluaran
                     </button>
                     <div class="dropdown">
                         <button class="btn btn-outline-primary dropdown-toggle fw-bold" type="button" data-bs-toggle="dropdown">
@@ -30,15 +30,15 @@
 <!-- Create Modal -->
 <div class="modal fade" id="createModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
-        <form id="createOrderForm" class="w-100">
+        <form id="createPengeluaranForm" class="w-100">
             @csrf
             <div class="modal-content">
                 <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title">Tambah Order</h5>
+                    <h5 class="modal-title">Tambah Pengeluaran</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    @include('orders.create')
+                    @include('pengeluaran.create')
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -58,7 +58,7 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                Apakah yakin ingin menghapus order ini?
+                Apakah yakin ingin menghapus pengeluaran ini?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -73,7 +73,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Detail Order</h5>
+                <h5 class="modal-title">Detail Pengeluaran</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body" id="showModalBody">
@@ -88,7 +88,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title">Edit Order</h5>
+                <h5 class="modal-title">Edit Pengeluaran</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body" id="editModalBody">
@@ -175,65 +175,47 @@ function showToast(message, type = 'success') {
     }, 5000);
 }
 
-let itemIndex = 1;
-const goodsOptions = `@foreach($goods as $g)<option value="{{ $g->id }}">{{ $g->nama_barang }} (Stok: {{ $g->jumlah_barang }})</option>@endforeach`;
-
 // CREATE
 $('#btn-create').click(function(){
-    $('#createOrderForm')[0].reset();
-    $('#itemsRepeater').html(getItemRow(0));
-    itemIndex = 1;
+    $('#createPengeluaranForm')[0].reset();
     $('#createModal').modal('show');
 });
 
-function getItemRow(index) {
-    return `
-    <div class="row g-3 align-items-end item-row mb-2">
-        <div class="col-md-4">
-            <select name="items[${index}][goods_id]" class="form-select" required>
-                <option value="" selected disabled>Pilih Barang</option>
-                ${goodsOptions}
-            </select>
-        </div>
-        <div class="col-md-3">
-            <input type="number" name="items[${index}][jumlah_barang]" class="form-control" min="1" required>
-        </div>
-        <div class="col-md-3">
-            <button type="button" class="btn btn-danger remove-item">
-                <i class="bi bi-trash"></i>
-            </button>
-        </div>
-    </div>`;
-}
+// function getItemRow(index) {
+//     return `
+//     <div class="row g-3 align-items-end item-row mb-2">
+//         <div class="col-md-4">
+//             <select name="items[${index}][goods_id]" class="form-select" required>
+//                 <option value="" selected disabled>Pilih Barang</option>
+//                 ${goodsOptions}
+//             </select>
+//         </div>
+//         <div class="col-md-3">
+//             <input type="number" name="items[${index}][jumlah_barang]" class="form-control" min="1" required>
+//         </div>
+//         <div class="col-md-3">
+//             <button type="button" class="btn btn-danger remove-item">
+//                 <i class="bi bi-trash"></i>
+//             </button>
+//         </div>
+//     </div>`;
+// }
 
-// ADD item (create)
-$(document).on('click', '#addItem', function(){
-    $('#itemsRepeater').append(getItemRow(itemIndex++));
-});
-
-// REMOVE item (create+edit)
-$(document).on('click', '.remove-item', function(){
-    if($('.item-row').length <= 1){
-        showToast('Order minimal memiliki satu barang!', 'error');
-        return;
-    }
-    $(this).closest('.item-row').remove();
-});
 
 // STORE
-$(document).on('submit', '#createOrderForm', function(e){
+$(document).on('submit', '#createPengeluaranForm', function(e){
     e.preventDefault();
     $.ajax({
-        url: '/orders',
+        url: '/pengeluaran',
         method: 'POST',
         data: $(this).serialize(),
         success: function(){
             $('#createModal').modal('hide');
-            $('#orders-table').DataTable().ajax.reload(null, false);
-            showToast('Order berhasil ditambahkan!', 'success');
+            $('#pengeluaran-table').DataTable().ajax.reload(null, false);
+            showToast('Pengeluaran berhasil ditambahkan!', 'success');
         },
         error: function(xhr){
-            showToast('Gagal menambah order: ' + xhr.responseText, 'error');
+            showToast('Gagal menambah pengeluaran: ' + xhr.responseText, 'error');
         }
     });
 });
@@ -242,7 +224,7 @@ $(document).on('submit', '#createOrderForm', function(e){
 $(document).on('click', '.btn-show', function(){
     const id = $(this).data('id');
     $('#showModalBody').html('<div class="text-center my-3"><div class="spinner-border text-primary"></div></div>');
-    $.get('/orders/' + id, function(data){
+    $.get('/pengeluaran/' + id, function(data){
         $('#showModalBody').html(data);
         $('#showModal').modal('show');
     });
@@ -253,7 +235,7 @@ $(document).on('click', '.btn-edit', function(){
     const id = $(this).data('id');
     $('#editModalBody').html('<div class="text-center my-3"><div class="spinner-border text-primary"></div></div>');
     $('#editModal').modal('show'); // <-- tambahkan ini
-    $.get('/orders/' + id + '/edit', function(data){
+    $.get('/pengeluaran/' + id + '/edit', function(data){
         $('#editModalBody').html(data);
     });
 });
@@ -264,17 +246,17 @@ $(document).on('click', '.btn-edit', function(){
 // });
 
 // SUBMIT edit
-$(document).on('submit', '#editOrderForm', function(e){
+$(document).on('submit', '#editPengeluaranForm', function(e){
     e.preventDefault();
     const id = $(this).find('input[name=id]').val();
     $.ajax({
-        url: '/orders/' + id,
+        url: '/pengeluaran/' + id,
         type: 'POST',
         data: $(this).serialize() + '&_method=PUT',
         success: function(){
             $('#editModal').modal('hide');
-            $('#orders-table').DataTable().ajax.reload(null, false);
-            showToast('Order berhasil diperbarui!', 'success');
+            $('#pengeluaran-table').DataTable().ajax.reload(null, false);
+            showToast('Pengeluaran berhasil diperbarui!', 'success');
         },
         error: function(xhr){
             showToast('Update gagal: ' + xhr.responseText, 'error');
@@ -291,7 +273,7 @@ $(document).on('click', '.btn-delete', function(){
 $('#confirmDeleteBtn').click(function(){
     if(!deleteId) return;
     $.ajax({
-        url: '/orders/' + deleteId,
+        url: '/pengeluaran/' + deleteId,
         method: 'POST',
         data: {
             _method: 'DELETE',
@@ -299,12 +281,12 @@ $('#confirmDeleteBtn').click(function(){
         },
         success: function(){
             $('#deleteConfirmModal').modal('hide');
-            $('#orders-table').DataTable().ajax.reload(null, false);
-            showToast('Order berhasil dihapus!', 'success');
+            $('#pengeluaran-table').DataTable().ajax.reload(null, false);
+            showToast('Pengeluaran berhasil dihapus!', 'success');
         },
         error: function(){
             $('#deleteConfirmModal').modal('hide');
-            showToast('Gagal menghapus order!', 'error');
+            showToast('Gagal menghapus pengeluaran!', 'error');
         }
     });
 });
@@ -313,7 +295,7 @@ $('#confirmDeleteBtn').click(function(){
 $(document).on('click', '.export-option', function(e){
     e.preventDefault();
     const type = $(this).data('type');
-    window.location.href = '/orders/export/' + type;
+    window.location.href = '/pengeluaran/export/' + type;
 });
 
 @if (session('success'))
@@ -331,7 +313,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 @endif
-
 
 </script>
 @endpush

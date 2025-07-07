@@ -13,6 +13,10 @@
             <input type="date" name="tanggal" class="form-control" value="{{ $order->tanggal }}" required>
         </div>
         <div class="col-md-6">
+            <label>Nama PO</label>
+            <input type="text" name="nama_po" class="form-control" value="{{ $order->nama_po }}" required>
+        </div>
+        <div class="col-md-6">
             <label>Company</label>
             <input type="text" name="company" class="form-control" value="{{ $order->company }}" required>
         </div>
@@ -20,25 +24,25 @@
             <label>PIC</label>
             <input type="text" name="pic" class="form-control" value="{{ $order->pic }}" required>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-3">
             <label>No Telp</label>
             <input type="text" name="no_telp" class="form-control" value="{{ $order->no_telp }}" required>
+        </div>
+        <div class="col-md-3">
+            <label>Fax</label>
+            <input type="text" name="fax" class="form-control" value="{{ $order->fax }}">
         </div>
         <div class="col-md-6">
             <label>Email</label>
             <input type="email" name="email" class="form-control" value="{{ $order->email }}" required>
-        </div>
-        <div class="col-md-6">
-            <label>Fax</label>
-            <input type="text" name="fax" class="form-control" value="{{ $order->fax }}">
         </div>
          <div class="col-md-6">
             <label>Alamat</label>
             <textarea name="alamat" class="form-control" rows="2" required>{{ $order->alamat }}</textarea>
         </div>
         <div class="col-md-6">
-            <label>Catatan</label>
-            <textarea name="catatan" class="form-control" rows="2">{{ $order->catatan }}</textarea>
+            <label>Keterangan</label>
+            <textarea name="keterangan" class="form-control" rows="2">{{ $order->keterangan }}</textarea>
         </div>
     </div>
 

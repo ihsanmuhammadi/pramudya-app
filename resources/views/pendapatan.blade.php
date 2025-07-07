@@ -5,10 +5,10 @@
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6 text-gray-900">
-                <h1 class="fw-bold display-6 mb-4">Purchase Order</h1>
+                <h1 class="fw-bold display-6 mb-4">Pendapatan</h1>
                 <div class="mb-3 d-flex justify-content-between align-items-center">
                     <button class="btn btn-primary" id="btn-create">
-                        <i class="bi bi-plus-circle me-1"></i> Tambah Order
+                        <i class="bi bi-plus-circle me-1"></i> Tambah Pendapatan
                     </button>
                     <div class="dropdown">
                         <button class="btn btn-outline-primary dropdown-toggle fw-bold" type="button" data-bs-toggle="dropdown">
@@ -21,7 +21,7 @@
                         </ul>
                     </div>
                 </div>
-                {{ $dataTable->table() }}
+                {{ $dataTable->table(['id' => 'pendapatan-table']) }}
             </div>
         </div>
     </div>
@@ -29,16 +29,38 @@
 
 <!-- Create Modal -->
 <div class="modal fade" id="createModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <form id="createOrderForm" class="w-100">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <form id="createPendapatanForm" class="w-100">
             @csrf
             <div class="modal-content">
                 <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title">Tambah Order</h5>
+                    <h5 class="modal-title">Tambah Pendapatan</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    @include('orders.create')
+                    <div class="mb-3">
+                        <label for="order_id" class="form-label">No PO</label>
+                        <select name="order_id" id="order_id" class="form-select" required>
+                            <option value="" disabled selected>Pilih No PO</option>
+                            @foreach($orders as $order)
+                                <option value="{{ $order->id }}">{{ $order->no_po }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div id="orderInfo" style="display: none;">
+                        <div class="mb-2">
+                            <label class="form-label">Nama PO</label>
+                            <input type="text" class="form-control" id="nama_po" readonly>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label">Tanggal</label>
+                            <input type="text" class="form-control" id="tanggal" readonly>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label">Total Pendapatan</label>
+                            <input type="text" class="form-control" id="total" readonly>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -58,41 +80,11 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                Apakah yakin ingin menghapus order ini?
+                Apakah yakin ingin menghapus pendapatan ini?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                 <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Hapus</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Show Modal -->
-<div class="modal fade" id="showModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Detail Order</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body" id="showModalBody">
-                <div class="text-center my-3"><div class="spinner-border text-primary"></div></div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Edit Modal -->
-<div class="modal fade" id="editModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title">Edit Order</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body" id="editModalBody">
-                <div class="text-center my-3"><div class="spinner-border text-primary"></div></div>
             </div>
         </div>
     </div>
@@ -113,11 +105,14 @@
     </div>
 </div>
 @endif
-
 @endsection
 
 @push('styles')
 <style>
+table.dataTable td.text-center {
+    vertical-align: middle !important;
+}
+
 .toast { position: relative; }
 .toast-progress {
     position: absolute;
@@ -134,7 +129,6 @@
     from { width: 100%; }
     to { width: 0%; }
 }
-
 </style>
 @endpush
 
@@ -143,7 +137,6 @@
 {{ $dataTable->scripts(attributes: ['type' => 'module']) }}
 
 <script>
-// Toast function with loading bar
 function showToast(message, type = 'success') {
     const toastId = 'toast-' + Date.now();
     const bgColor = type === 'success' ? '#0d6efd' : (type === 'error' ? '#dc3545' : '#0d6efd');
@@ -160,8 +153,7 @@ function showToast(message, type = 'success') {
                 </div>
                 <div class="toast-progress"></div>
             </div>
-        </div>
-    `;
+        </div>`;
     $('body').append(toastHTML);
     const toastEl = document.getElementById(toastId);
     const bar = toastEl.querySelector('.toast-progress');
@@ -175,163 +167,78 @@ function showToast(message, type = 'success') {
     }, 5000);
 }
 
-let itemIndex = 1;
-const goodsOptions = `@foreach($goods as $g)<option value="{{ $g->id }}">{{ $g->nama_barang }} (Stok: {{ $g->jumlah_barang }})</option>@endforeach`;
-
-// CREATE
-$('#btn-create').click(function(){
-    $('#createOrderForm')[0].reset();
-    $('#itemsRepeater').html(getItemRow(0));
-    itemIndex = 1;
+// OPEN CREATE MODAL
+$('#btn-create').click(function() {
+    $('#createPendapatanForm')[0].reset();
+    $('#orderInfo').hide();
     $('#createModal').modal('show');
 });
 
-function getItemRow(index) {
-    return `
-    <div class="row g-3 align-items-end item-row mb-2">
-        <div class="col-md-4">
-            <select name="items[${index}][goods_id]" class="form-select" required>
-                <option value="" selected disabled>Pilih Barang</option>
-                ${goodsOptions}
-            </select>
-        </div>
-        <div class="col-md-3">
-            <input type="number" name="items[${index}][jumlah_barang]" class="form-control" min="1" required>
-        </div>
-        <div class="col-md-3">
-            <button type="button" class="btn btn-danger remove-item">
-                <i class="bi bi-trash"></i>
-            </button>
-        </div>
-    </div>`;
-}
-
-// ADD item (create)
-$(document).on('click', '#addItem', function(){
-    $('#itemsRepeater').append(getItemRow(itemIndex++));
+// FETCH ORDER DETAIL WHEN SELECTED
+$('#order_id').on('change', function() {
+    const id = $(this).val();
+    if (!id) return;
+    $.get(`/pendapatan/order/${id}`, function(data) {
+        $('#nama_po').val(data.nama_po);
+        $('#tanggal').val(data.tanggal);
+        $('#total').val('Rp' + parseInt(data.total_semua_barang).toLocaleString('id-ID'));
+        $('#orderInfo').slideDown();
+    })
 });
 
-// REMOVE item (create+edit)
-$(document).on('click', '.remove-item', function(){
-    if($('.item-row').length <= 1){
-        showToast('Order minimal memiliki satu barang!', 'error');
-        return;
-    }
-    $(this).closest('.item-row').remove();
-});
-
-// STORE
-$(document).on('submit', '#createOrderForm', function(e){
+// SUBMIT CREATE
+$(document).on('submit', '#createPendapatanForm', function(e) {
     e.preventDefault();
     $.ajax({
-        url: '/orders',
+        url: '/pendapatan',
         method: 'POST',
         data: $(this).serialize(),
-        success: function(){
+        success: function() {
             $('#createModal').modal('hide');
-            $('#orders-table').DataTable().ajax.reload(null, false);
-            showToast('Order berhasil ditambahkan!', 'success');
+            $('#pendapatan-table').DataTable().ajax.reload(null, false);
+            showToast('Pendapatan berhasil ditambahkan!');
         },
-        error: function(xhr){
-            showToast('Gagal menambah order: ' + xhr.responseText, 'error');
+        error: function(xhr) {
+            const msg = xhr.responseJSON?.message || 'Gagal menyimpan pendapatan.';
+            showToast(msg, 'error');
         }
     });
 });
 
-// SHOW
-$(document).on('click', '.btn-show', function(){
-    const id = $(this).data('id');
-    $('#showModalBody').html('<div class="text-center my-3"><div class="spinner-border text-primary"></div></div>');
-    $.get('/orders/' + id, function(data){
-        $('#showModalBody').html(data);
-        $('#showModal').modal('show');
-    });
-});
-
-// EDIT
-$(document).on('click', '.btn-edit', function(){
-    const id = $(this).data('id');
-    $('#editModalBody').html('<div class="text-center my-3"><div class="spinner-border text-primary"></div></div>');
-    $('#editModal').modal('show'); // <-- tambahkan ini
-    $.get('/orders/' + id + '/edit', function(data){
-        $('#editModalBody').html(data);
-    });
-});
-
-// // ADD item in EDIT modal
-// $(document).on('click', '#addEditItem', function(){
-//     $('#editItemsRepeater').append(getItemRow(editItemIndex++));
-// });
-
-// SUBMIT edit
-$(document).on('submit', '#editOrderForm', function(e){
-    e.preventDefault();
-    const id = $(this).find('input[name=id]').val();
-    $.ajax({
-        url: '/orders/' + id,
-        type: 'POST',
-        data: $(this).serialize() + '&_method=PUT',
-        success: function(){
-            $('#editModal').modal('hide');
-            $('#orders-table').DataTable().ajax.reload(null, false);
-            showToast('Order berhasil diperbarui!', 'success');
-        },
-        error: function(xhr){
-            showToast('Update gagal: ' + xhr.responseText, 'error');
-        }
-    });
-});
-
-// DELETE
+// DELETE HANDLER
 let deleteId = null;
-$(document).on('click', '.btn-delete', function(){
+$(document).on('click', '.btn-delete', function() {
     deleteId = $(this).data('id');
     $('#deleteConfirmModal').modal('show');
 });
-$('#confirmDeleteBtn').click(function(){
-    if(!deleteId) return;
+$('#confirmDeleteBtn').click(function() {
+    if (!deleteId) return;
     $.ajax({
-        url: '/orders/' + deleteId,
+        url: `/pendapatan/${deleteId}`,
         method: 'POST',
         data: {
             _method: 'DELETE',
             _token: $('meta[name="csrf-token"]').attr('content')
         },
-        success: function(){
+        success: function() {
             $('#deleteConfirmModal').modal('hide');
-            $('#orders-table').DataTable().ajax.reload(null, false);
-            showToast('Order berhasil dihapus!', 'success');
+            $('#pendapatan-table').DataTable().ajax.reload(null, false);
+            showToast('Pendapatan berhasil dihapus!');
         },
-        error: function(){
+        error: function() {
             $('#deleteConfirmModal').modal('hide');
-            showToast('Gagal menghapus order!', 'error');
+            showToast('Gagal menghapus pendapatan!', 'error');
         }
     });
 });
 
-// EXPORT
+// EXPORT HANDLER
 $(document).on('click', '.export-option', function(e){
     e.preventDefault();
     const type = $(this).data('type');
-    window.location.href = '/orders/export/' + type;
+    if (!type) return;
+    window.location.href = `/pendapatan/export/${type}`;
 });
-
-@if (session('success'))
-document.addEventListener('DOMContentLoaded', function () {
-    const toastEl = document.getElementById('toastSuccess');
-    if (toastEl) {
-        const toast = new bootstrap.Toast(toastEl, { delay: 5000 });
-        toast.show();
-        const bar = toastEl.querySelector('.toast-progress');
-        if (bar) {
-            bar.style.animation = 'none';
-            bar.offsetHeight;
-            bar.style.animation = 'progressBar 5s linear forwards';
-        }
-    }
-});
-@endif
-
 
 </script>
 @endpush

@@ -14,7 +14,7 @@
 
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6 text-gray-900">
-                <h1 class="fw-bold display-6 mb-4">Manajemen Barang</h1>
+                <h1 class="fw-bold display-6 mb-4">Data Barang</h1>
                 <div class="mb-3 d-flex justify-content-between align-items-center">
                     <div>
                         <button class="btn btn-primary" id="btn-create">

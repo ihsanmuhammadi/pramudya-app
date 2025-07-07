@@ -6,7 +6,7 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                        <img src="{{ asset('images/pp.jpeg') }}" alt="Logo" class="h-9 w-auto rounded-full">
                     </a>
                 </div>
 
@@ -15,14 +15,23 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('generate')" :active="request()->routeIs('generate')">
-                        {{ __('Generate PDF') }}
-                    </x-nav-link>
                     <x-nav-link :href="route('goods.index')" :active="request()->routeIs('goods.index')">
                         {{ __('Data Barang') }}
                     </x-nav-link>
                     <x-nav-link :href="route('orders.index')" :active="request()->routeIs('orders.index')">
-                        {{ __('Data Order') }}
+                        {{ __('Purchase Order') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('surat-jalan')" :active="request()->routeIs('surat-jalan')">
+                        {{ __('Surat Jalan') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('pengiriman.index')" :active="request()->routeIs('pengiriman.index')">
+                        {{ __('Pengiriman') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('pendapatan.index')" :active="request()->routeIs('pendapatan.index')">
+                        {{ __('Pendapatan') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('pengeluaran.index')" :active="request()->routeIs('pengeluaran.index')">
+                        {{ __('Pengeluaran') }}
                     </x-nav-link>
                     <x-nav-link :href="route('index')" :active="request()->routeIs('index')">
                         {{ __('Website') }}
@@ -46,9 +55,9 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')">
+                        {{-- <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Profile') }}
-                        </x-dropdown-link>
+                        </x-dropdown-link> --}}
 
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
@@ -92,9 +101,9 @@
             </div>
 
             <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">
+                {{-- <x-responsive-nav-link :href="route('profile.edit')">
                     {{ __('Profile') }}
-                </x-responsive-nav-link>
+                </x-responsive-nav-link> --}}
 
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">

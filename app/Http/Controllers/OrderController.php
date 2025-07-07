@@ -23,6 +23,7 @@ class OrderController extends Controller
     public function store(Request $request) {
         $validated = $request->validate([
             'no_po' => 'required',
+            'nama_po' => 'required',
             'tanggal' => 'required|date',
             'company' => 'required',
             'alamat' => 'required',
@@ -53,6 +54,7 @@ class OrderController extends Controller
 
             $order = Order::create([
                 'no_po' => $validated['no_po'],
+                'nama_po' => $validated['nama_po'],
                 'tanggal' => $validated['tanggal'],
                 'company' => $validated['company'],
                 'alamat' => $validated['alamat'],
@@ -61,7 +63,7 @@ class OrderController extends Controller
                 'fax' => $validated['fax'],
                 'pic' => $validated['pic'],
                 'total_semua_barang' => $total_all,
-                'catatan' => $request->catatan
+                'keterangan' => $request->keterangan
             ]);
 
             if (!empty($validated['items'])) {
@@ -104,6 +106,7 @@ class OrderController extends Controller
     public function update(Request $request, $id) {
         $validated = $request->validate([
             'no_po' => 'required',
+            'nama_po' => 'required',
             'tanggal' => 'required|date',
             'company' => 'required',
             'alamat' => 'required',
@@ -143,6 +146,7 @@ class OrderController extends Controller
 
             $order->update([
                 'no_po' => $validated['no_po'],
+                'nama_po' => $validated['nama_po'],
                 'tanggal' => $validated['tanggal'],
                 'company' => $validated['company'],
                 'alamat' => $validated['alamat'],
@@ -151,7 +155,7 @@ class OrderController extends Controller
                 'fax' => $validated['fax'],
                 'pic' => $validated['pic'],
                 'total_semua_barang' => $total_all,
-                'catatan' => $request->catatan
+                'keterangan' => $request->keterangan
             ]);
 
             if (!empty($validated['items'])) {
@@ -201,7 +205,7 @@ class OrderController extends Controller
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->fromArray([
-            ['No PO', 'Tanggal', 'Company', 'PIC', 'Total', 'Jumlah Item', 'Created', 'Updated']
+            ['No PO', 'Nama PO', 'Tanggal', 'Company', 'PIC', 'Total', 'Jumlah Item', 'Created', 'Updated']
         ]);
 
         $orders = Order::withCount('items')->get();
@@ -209,6 +213,7 @@ class OrderController extends Controller
         foreach ($orders as $order) {
             $sheet->fromArray([
                 $order->no_po,
+                $order->nama_po,
                 $order->tanggal,
                 $order->company,
                 $order->pic,
@@ -240,10 +245,11 @@ class OrderController extends Controller
 
         $callback = function () use ($orders) {
             $handle = fopen('php://output', 'w');
-            fputcsv($handle, ['No PO', 'Tanggal', 'Company', 'PIC', 'Total', 'Jumlah Item']);
+            fputcsv($handle, ['No PO', 'Nama PO', 'Tanggal', 'Company', 'PIC', 'Total', 'Jumlah Item']);
             foreach ($orders as $order) {
                 fputcsv($handle, [
                     $order->no_po,
+                    $order->nama_po,
                     $order->tanggal,
                     $order->company,
                     $order->pic,

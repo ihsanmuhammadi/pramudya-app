@@ -11,18 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('orders', function (Blueprint $table) {
+        Schema::create('pengeluarans', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('no_po');
             $table->string('nama_po');
             $table->date('tanggal');
-            $table->string('company');
-            $table->text('alamat');
-            $table->string('no_telp');
-            $table->string('email');
-            $table->string('fax')->nullable();
-            $table->string('pic');
-            $table->decimal('total_semua_barang', 15,2)->default(0);
+            $table->decimal('total', 15,2)->default(0);
             $table->text('keterangan')->nullable();
             $table->timestamps();
         });
@@ -33,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('orders');
+        Schema::dropIfExists('pengeluarans');
     }
 };

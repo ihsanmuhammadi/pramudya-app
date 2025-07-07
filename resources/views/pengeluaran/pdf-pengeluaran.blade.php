@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Data Orders</title>
+    <title>Data Pengeluaran</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; }
         .header { text-align: center; margin-bottom: 30px; }
@@ -16,8 +16,8 @@
 </head>
 <body>
     <div class="header">
-        <h1>Data Orders</h1>
-        <p>Exported on {{ date('d F Y H:i:s') }}</p>
+        <h1>Data Pengeluaran</h1>
+        <p>Diekspor pada {{ date('d F Y H:i:s') }}</p>
     </div>
 
     <table>
@@ -25,32 +25,26 @@
             <tr>
                 <th>No</th>
                 <th>No PO</th>
-                <th>Nama PO</th>
                 <th>Tanggal</th>
-                <th>Company</th>
-                <th>PIC</th>
+                <th>Nama PO</th>
                 <th>Total</th>
-                <th>Jumlah Items</th>
+                <th>Keterangan</th>
+                <th>Dibuat Oleh</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($orders as $index => $order)
+            @foreach($pengeluaran as $index => $item)
             <tr>
                 <td>{{ $index + 1 }}</td>
-                <td>{{ $order->no_po }}</td>
-                <td>{{ $order->nama_po }}</td>
-                <td>{{ $order->tanggal }}</td>
-                <td>{{ $order->company }}</td>
-                <td>{{ $order->pic }}</td>
-                <td>Rp{{ number_format($order->total_semua_barang,0,',','.') }}</td>
-                <td>{{ $order->items->count() }}</td>
+                <td>{{ $item->no_po }}</td>
+                <td>{{ $item->tanggal }}</td>
+                <td>{{ $item->nama_po }}</td>
+                <td>Rp{{ number_format($item->total, 0, ',', '.') }}</td>
+                <td>{{ $item->keterangan }}</td>
             </tr>
             @endforeach
         </tbody>
     </table>
 
     <div class="footer">
-        <p>Total Orders: {{ count($orders) }}</p>
-    </div>
-</body>
-</html>
+        <
