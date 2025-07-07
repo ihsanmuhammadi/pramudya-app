@@ -14,7 +14,7 @@ class Pengiriman extends Model
 
     protected $table = 'pengiriman';
     protected $fillable = [
-        'no_surat', 'order_id', 'tanggal', 'penerima', 'status'
+        'no_surat', 'order_id', 'tanggal', 'penerima', 'keterangan_penerima', 'kendaraan', 'status'
     ];
 
     public function order()

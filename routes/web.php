@@ -7,6 +7,7 @@ use App\Http\Controllers\SuratJalanController;
 use App\Http\Controllers\PengirimanController;
 use App\Http\Controllers\PendapatanController;
 use App\Http\Controllers\PengeluaranController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -33,9 +34,7 @@ Route::get('/about', function () {
 // Admin page
 Route::middleware(['auth', 'verified'])->group(function () {
     // Dashboard
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Data Barang
     Route::get('/goods', [GoodsController::class, 'index'])->name('goods.index');
@@ -65,6 +64,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Surat Jalan
     Route::get('/surat-jalan', [SuratJalanController::class, 'create'])->name('surat-jalan');
     Route::post('/surat-jalan', [SuratJalanController::class, 'store'])->name('surat-jalan.store');
+    Route::get('/surat-jalan/download/{id}', [SuratJalanController::class, 'download'])->name('surat-jalan.download');
 
     // Pengiriman
     Route::get('/pengiriman', [PengirimanController::class, 'index'])->name('pengiriman.index');

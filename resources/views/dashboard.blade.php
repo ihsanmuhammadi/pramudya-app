@@ -1,18 +1,93 @@
 @extends('layouts.app')
 @section('content')
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
+<div class="py-6 min-h-screen overflow-hidden bg-gray-50">
+    <div class="max-w-7xl mx-auto sm:px-4 lg:px-6">
+        <!-- Judul Halaman -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800">Dashboard</h1>
+        </div>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    {{ __("You're logged in!") }}
-                </div>
+        <!-- Ringkasan -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <!-- Total Barang -->
+            <div class="bg-white p-4 rounded shadow text-center">
+                <h3 class="text-sm font-semibold text-gray-600 mb-1">Total Barang</h3>
+                <p class="text-2xl font-bold text-blue-600">{{ $totalBarang }}</p>
+            </div>
+
+            <!-- Total Order -->
+            <div class="bg-white p-4 rounded shadow text-center">
+                <h3 class="text-sm font-semibold text-gray-600 mb-1">Total Order</h3>
+                <p class="text-2xl font-bold text-green-600">{{ $totalOrder }}</p>
+            </div>
+
+            <!-- Total Pendapatan -->
+            <div class="bg-white p-4 rounded shadow text-center">
+                <h3 class="text-sm font-semibold text-gray-600 mb-1">Total Pendapatan</h3>
+                <p class="text-2xl font-bold text-indigo-600">
+                    Rp{{ number_format($totalPendapatan, 0, ',', '.') }}
+                </p>
             </div>
         </div>
+
+        <!-- Statistik Pengiriman -->
+        <div class="bg-white p-4 rounded shadow mb-6">
+            <h3 class="text-base font-semibold text-gray-800 mb-3">Statistik Pengiriman</h3>
+            <div class="relative h-[250px]">
+                <canvas id="pengirimanChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Pengeluaran Terbaru -->
+        <div class="bg-white p-4 rounded shadow">
+            <h3 class="text-base font-semibold text-gray-800 mb-3">5 Pengeluaran Terbaru</h3>
+            @if($pengeluaranTerbaru->isEmpty())
+                <p class="text-sm text-gray-500">Belum ada data pengeluaran.</p>
+            @else
+                <ul class="divide-y divide-gray-200 text-sm">
+                    @foreach($pengeluaranTerbaru as $item)
+                    <li class="py-2 flex justify-between">
+                        <span class="text-gray-700">{{ $item->nama_po }}</span>
+                        <span class="text-red-600 font-semibold">Rp{{ number_format($item->total, 0, ',', '.') }}</span>
+                    </li>
+                    @endforeach
+                </ul>
+            @endif
+        </div>
     </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('pengirimanChart').getContext('2d');
+    const pengirimanChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: {!! json_encode(array_keys($pengirimanStats) ?: ['Tidak Ada Data']) !!},
+            datasets: [{
+                label: 'Jumlah Pengiriman',
+                data: {!! json_encode(array_values($pengirimanStats) ?: [0]) !!},
+                backgroundColor: 'rgba(59, 130, 246, 0.5)',
+                borderColor: 'rgba(59, 130, 246, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            maintainAspectRatio: false,
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        precision: 0
+                    }
+                }
+            },
+            plugins: {
+                legend: { display: false }
+            }
+        }
+    });
+</script>
 @endsection

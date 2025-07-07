@@ -11,19 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('orders', function (Blueprint $table) {
+        Schema::create('goods', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('no_po');
-            $table->string('nama_po');
-            $table->date('tanggal');
-            $table->string('company');
-            $table->text('alamat');
-            $table->string('no_telp');
-            $table->string('email');
-            $table->string('fax')->nullable();
-            $table->string('pic');
-            $table->decimal('total_semua_barang', 15,2)->default(0);
-            $table->text('keterangan')->nullable();
+            $table->string('nama_barang');
+            $table->integer('jumlah_barang');
+            $table->string('satuan_barang');
+            $table->decimal('harga_barang', 10, 2);
+            $table->string('kode_barang')->unique();
+            $table->text('spesifikasi')->nullable();
             $table->timestamps();
         });
     }
