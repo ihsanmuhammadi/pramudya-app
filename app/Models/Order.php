@@ -27,4 +27,11 @@ class Order extends Model
     {
         return $this->hasOne(Pendapatan::class);
     }
+
+    // Order.php
+    public function pengiriman()
+    {
+        return $this->hasOne(Pengiriman::class);
+    }
+
 }

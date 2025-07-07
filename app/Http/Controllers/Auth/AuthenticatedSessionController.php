@@ -14,7 +14,7 @@ class AuthenticatedSessionController extends Controller
 {
     // Hardcoded admin credentials
     private const ADMIN_EMAIL = 'admin@admin.com';
-    private const ADMIN_PASSWORD = 'admin123';
+    private const ADMIN_PASSWORD = 'pramudyaputrajaya';
 
     /**
      * Display the login view.

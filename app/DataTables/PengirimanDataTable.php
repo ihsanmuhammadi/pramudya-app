@@ -22,7 +22,24 @@ class PengirimanDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('action', 'pengiriman.action')
+            ->addIndexColumn()
+            ->addColumn('no_surat', fn ($row) => $row->no_surat ?? '-')
+            ->addColumn('no_po', fn ($row) => $row->order->no_po ?? '-')
+            ->addColumn('tanggal', fn ($row) => $row->tanggal ?? '-')
+            ->addColumn('penerima', fn ($row) => $row->penerima ?? '-')
+            ->editColumn('status', fn ($row) => ucfirst($row->status))
+            ->addColumn('action', function ($order) {
+                return '
+                    <div class="d-flex justify-content-center">
+                        <button class="btn btn-sm btn-warning me-1 btn-edit" data-id="'.$order->id.'">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn btn-sm btn-danger btn-delete" data-id="'.$order->id.'">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
+                ';
+            })
             ->setRowId('id');
     }
 
@@ -63,15 +80,17 @@ class PengirimanDataTable extends DataTable
     public function getColumns(): array
     {
         return [
+            Column::make('no_surat')->title('No Surat Jalan'),
+            Column::make('no_po')->title('No PO'),
+            Column::make('tanggal')->title('Tanggal'),
+            Column::make('penerima')->title('Penerima'),
+            Column::make('status')->title('Status'),
+            Column::make('created_at')->title('Dicatat Pada'),
             Column::computed('action')
-                  ->exportable(false)
-                  ->printable(false)
-                  ->width(60)
-                  ->addClass('text-center'),
-            Column::make('id'),
-            Column::make('add your columns'),
-            Column::make('created_at'),
-            Column::make('updated_at'),
+                ->exportable(false)
+                ->printable(false)
+                ->title('Aksi')
+                ->addClass('text-center'),
         ];
     }
 

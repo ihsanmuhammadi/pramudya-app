@@ -34,26 +34,22 @@
                     <input type="text" name="keterangan_penerima" class="w-full border-gray-300 rounded shadow-sm">
                 </div>
                 <div>
-                    <label class="block font-medium mb-1">No PO</label>
-                    <input type="text" name="no_po" class="w-full border-gray-300 rounded shadow-sm">
+                    <label class="block font-medium mb-1">No PO *</label>
+                    <select name="order_id" id="order_id" class="form-select w-full border-gray-300 rounded shadow-sm" required>
+                        <option value="">-- Pilih No PO --</option>
+                        @foreach($orders as $order)
+                            <option value="{{ $order->id }}">{{ $order->no_po }} - {{ $order->nama_po }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div>
                     <label class="block font-medium mb-1">Kendaraan</label>
                     <input type="text" name="kendaraan" class="w-full border-gray-300 rounded shadow-sm">
                 </div>
-
-                <div>
-                    <label class="block font-medium mb-1">Detail Barang (format: Qty|Nama Barang|Keterangan)</label>
-                    <textarea name="detail_barang" class="w-full border-gray-300 rounded shadow-sm" rows="4" placeholder="Misal:
-3|Hekter|Habis
-1|Sabun|Tersedia
-2|Kertas|Tersedia"></textarea>
-                </div>
             </div>
 
             <div class="text-center mt-4">
-                <button type="submit"
-                    class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">
+                <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">
                     Generate PDF
                 </button>
             </div>

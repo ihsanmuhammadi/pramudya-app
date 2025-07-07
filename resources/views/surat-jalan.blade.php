@@ -78,9 +78,9 @@
     <tbody>
         @foreach($items as $item)
         <tr>
-            <td>{{ $item['qty'] }}</td>
+            <td style="text-align: center; vertical-align: middle;">{{ $item['qty'] }}</td>
             <td>{{ $item['nama_barang'] }}</td>
-            <td>{{ $item['keterangan'] }}</td>
+            <td style="text-align: center; vertical-align: middle;">{{ $item['keterangan'] }}</td>
         </tr>
         @endforeach
     </tbody>

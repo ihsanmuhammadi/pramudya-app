@@ -63,9 +63,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/orders/export/csv', [OrderController::class, 'exportCsv'])->name('orders.export.csv');
 
     // Surat Jalan
-    Route::get('/surat-jalan', function () {
-        return view('generate');
-    })->name('surat-jalan');
+    Route::get('/surat-jalan', [SuratJalanController::class, 'create'])->name('surat-jalan');
     Route::post('/surat-jalan', [SuratJalanController::class, 'store'])->name('surat-jalan.store');
 
     // Pengiriman
