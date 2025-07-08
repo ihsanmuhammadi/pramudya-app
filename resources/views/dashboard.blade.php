@@ -40,7 +40,6 @@
                 </div>
             </div>
 
-            <!-- Total Pendapatan (dipindah ke sisi kanan grafik) -->
             <div class="bg-white p-6 rounded shadow h-full flex flex-col justify-center items-center text-center">
                 <h3 class="text-base font-semibold text-gray-700 mb-3">Total Pendapatan</h3>
                 <div class="text-4xl font-extrabold text-indigo-700 mb-2">

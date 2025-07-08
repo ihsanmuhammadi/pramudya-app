@@ -5,7 +5,7 @@
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6 text-gray-900">
-                <h1 class="fw-bold display-6 mb-4">Data Pengiriman</h1>
+                <h1 class="fw-bold display-6 mb-4">Pengiriman</h1>
                 <div class="mb-3 d-flex justify-content-end">
                     <div class="dropdown">
                         <button class="btn btn-outline-primary dropdown-toggle fw-bold" type="button" id="exportDropdown" data-bs-toggle="dropdown" aria-expanded="false">

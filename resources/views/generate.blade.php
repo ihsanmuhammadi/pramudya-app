@@ -21,14 +21,6 @@
                     <label class="block font-medium mb-1">Tanggal *</label>
                     <input type="date" name="tanggal" class="w-full border-gray-300 rounded shadow-sm" required value="{{ date('Y-m-d') }}">
                 </div>
-                {{-- <div>
-                    <label class="block font-medium mb-1">Nama Toko / Tuan *</label>
-                    <input type="text" name="penerima" class="w-full border-gray-300 rounded shadow-sm" required>
-                </div>
-                <div>
-                    <label class="block font-medium mb-1">Alamat Penerima *</label>
-                    <textarea name="alamat_penerima" class="w-full border-gray-300 rounded shadow-sm" rows="2" required></textarea>
-                </div> --}}
                 <div>
                     <label class="block font-medium mb-1">Keterangan Penerima</label>
                     <input type="text" name="keterangan_penerima" class="w-full border-gray-300 rounded shadow-sm">
