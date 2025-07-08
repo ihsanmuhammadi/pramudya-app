@@ -21,20 +21,32 @@
                 <p class="text-2xl font-bold text-green-600">{{ $totalOrder }}</p>
             </div>
 
-            <!-- Total Pendapatan -->
+            <!-- Total Pengeluaran -->
             <div class="bg-white p-4 rounded shadow text-center">
-                <h3 class="text-sm font-semibold text-gray-600 mb-1">Total Pendapatan</h3>
-                <p class="text-2xl font-bold text-indigo-600">
-                    Rp{{ number_format($totalPendapatan, 0, ',', '.') }}
+                <h3 class="text-sm font-semibold text-gray-600 mb-1">Total Pengeluaran</h3>
+                <p class="text-2xl font-bold text-red-500">
+                    Rp{{ number_format($totalPengeluaran, 0, ',', '.') }}
                 </p>
             </div>
         </div>
 
-        <!-- Statistik Pengiriman -->
-        <div class="bg-white p-4 rounded shadow mb-6">
-            <h3 class="text-base font-semibold text-gray-800 mb-3">Statistik Pengiriman</h3>
-            <div class="relative h-[250px]">
-                <canvas id="pengirimanChart"></canvas>
+        <!-- Statistik + Pendapatan -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
+            <!-- Grafik Statistik Pengiriman -->
+            <div class="bg-white p-4 rounded shadow col-span-2">
+                <h3 class="text-base font-semibold text-gray-800 mb-3">Statistik Pengiriman</h3>
+                <div class="relative h-[250px]">
+                    <canvas id="pengirimanChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Total Pendapatan (dipindah ke sisi kanan grafik) -->
+            <div class="bg-white p-6 rounded shadow h-full flex flex-col justify-center items-center text-center">
+                <h3 class="text-base font-semibold text-gray-700 mb-3">Total Pendapatan</h3>
+                <div class="text-4xl font-extrabold text-indigo-700 mb-2">
+                    Rp{{ number_format($totalPendapatan, 0, ',', '.') }}
+                </div>
+                <p class="text-sm text-gray-500">Akumulasi dari semua order</p>
             </div>
         </div>
 

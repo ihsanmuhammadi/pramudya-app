@@ -10,6 +10,7 @@ class DashboardController extends Controller
     {
         $totalBarang = \App\Models\Goods::count();
         $totalOrder = \App\Models\Order::count();
+        $totalPengeluaran = \App\Models\Pengeluaran::sum('total');
 
         // Ambil total pendapatan dari order_items yang terkait dengan order_id di pendapatan
         $totalPendapatan = \App\Models\OrderItem::whereIn('order_id', function ($query) {
@@ -27,6 +28,7 @@ class DashboardController extends Controller
             'totalBarang',
             'totalOrder',
             'totalPendapatan',
+            'totalPengeluaran',
             'pengeluaranTerbaru',
             'pengirimanStats'
         ));
