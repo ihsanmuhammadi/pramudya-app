@@ -31,6 +31,10 @@ Route::get('/about', function () {
     return view('about');
 })->name('about');
 
+Route::get('/', function () {
+    return view('index');
+})->name('home');
+
 // Admin page
 Route::middleware(['auth', 'verified'])->group(function () {
     // Dashboard
