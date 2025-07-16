@@ -13,8 +13,8 @@ use App\Models\User;
 class AuthenticatedSessionController extends Controller
 {
     // Hardcoded admin credentials
-    private const ADMIN_EMAIL = 'admin@admin.com';
-    private const ADMIN_PASSWORD = 'pramudyaputrajaya';
+    private const ADMIN_EMAIL = 'admin@pramudyaputra.com';
+    private const ADMIN_PASSWORD = 'jayasepanjanghayat947';
 
     /**
      * Display the login view.

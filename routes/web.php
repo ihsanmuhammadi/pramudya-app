@@ -10,27 +10,7 @@ use App\Http\Controllers\PengeluaranController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/TesTemplate', function () {
-    return view('surat-jalan');
-});
-
 // Company profile
-Route::get('/index', function () {
-    return view('index');
-})->name('index');
-
-Route::get('/price', function () {
-    return view('price');
-})->name('price');
-
-Route::get('/about', function () {
-    return view('about');
-})->name('about');
-
 Route::get('/', function () {
     return view('index');
 })->name('home');
